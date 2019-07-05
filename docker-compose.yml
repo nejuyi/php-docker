@@ -1,0 +1,44 @@
+version: "3.3"
+services:
+  webserver:
+      build: .
+      restart: always
+      container_name: 'iavante-web'
+      ports:
+          - "8080:8080"
+          - "80:80"
+      depends_on:
+        - mysql
+      volumes:
+          - ./:/var/www/html
+          - ./docker-conf/php/:/usr/local/etc/php/
+          - ./docker-conf/vhosts:/etc/apache2/sites-enabled
+          - ./docker-conf/logs/apache2:/var/log/apache2
+  mysql:
+    image: mysql:5.6
+    restart: always
+    container_name: 'iavante-mysql'
+    ports:
+      - "3306:3306"
+    volumes:
+      - ${MYSQL_LOG_DIR-./logs/mysql}:/var/log/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: dpr_iavante
+      MYSQL_USER: iavante
+      MYSQL_PASSWORD: iavante
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    restart: always
+    container_name: 'iavante-phpmyadmin'
+    environment:
+      PMA_HOST: db
+      PMA_USER: root
+      PMA_PASSWORD: root
+    depends_on:
+      - mysql
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+    ports:
+        - "8001:80"
