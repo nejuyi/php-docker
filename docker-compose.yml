@@ -3,7 +3,7 @@ services:
   webserver:
       build: .
       restart: always
-      container_name: 'iavante-web'
+      container_name: 'project-web'
       ports:
           - "8080:8080"
           - "80:80"
@@ -17,20 +17,20 @@ services:
   mysql:
     image: mysql:5.6
     restart: always
-    container_name: 'iavante-mysql'
+    container_name: 'project-mysql'
     ports:
       - "3306:3306"
     volumes:
       - ${MYSQL_LOG_DIR-./logs/mysql}:/var/log/mysql
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: dpr_iavante
-      MYSQL_USER: iavante
-      MYSQL_PASSWORD: iavante
+      MYSQL_ROOT_PASSWORD: 
+      MYSQL_DATABASE: 
+      MYSQL_USER: 
+      MYSQL_PASSWORD: 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     restart: always
-    container_name: 'iavante-phpmyadmin'
+    container_name: 'project-phpmyadmin'
     environment:
       PMA_HOST: db
       PMA_USER: root
